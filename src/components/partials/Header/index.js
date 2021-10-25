@@ -42,7 +42,7 @@ function Header() {
                     <Link to=""> Cadastrar </Link>
                   </li>
                   <li>
-                    <Link to="/singin" className="button"> Poste Um Anuncio </Link>
+                    <Link to="/login" className="button"> Poste Um Anuncio </Link>
                   </li>
                 </>
               )
