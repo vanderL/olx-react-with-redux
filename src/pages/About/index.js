@@ -4,9 +4,10 @@ import {Link} from 'react-router-dom';
 // import { Container } from './styles';
 
 function About() {
-  return <div>
+  return (
+    <div>
       <Link to='/'> Home </Link>
-  </div>;
+    </div>);
 }
 
 export default About;
