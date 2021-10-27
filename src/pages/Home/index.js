@@ -5,10 +5,12 @@ import useApi from '../../services/Api';
 
 import { PageArea, SearchArea } from './styles';
 import {  PageContainer } from '../../components/MainComponents';
+import AdItem from '../../components/partials/AdItem';
 
 function Login() {
     const [stateList, setStateList] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [adsList, setAdsList] = useState([]);
 
     const api = useApi();
 
@@ -28,6 +30,18 @@ function Login() {
       }
 
       getCategories();
+    }, [])
+
+    useEffect(() => {
+      const getRecentAds = async (state) => {
+        const json = await api.getRecentAds({
+          sort: 'desc',
+          limit: 8
+        });
+        setAdsList(json.ads)
+      }
+
+      getRecentAds();
     }, [])
 
     return (
@@ -62,7 +76,18 @@ function Login() {
         </SearchArea>
         <PageContainer>
             <PageArea>
-            Home
+                <h2> Anúncios Recentes</h2>
+                <div className="list">
+                  {adsList.map((item, key) => (
+                    <AdItem key={key} data={item}/>
+                  ))}
+                </div>
+
+                <Link to={'/ads'} className="seeAllLink">Ver todos</Link>
+
+                <hr />
+
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Animi quod nostrum laborum nam ipsam odit libero pariatur ab sit, blanditiis magni, optio deleniti. Dolor mollitia sed rerum officiis maiores quasi.
             </PageArea>
         </PageContainer>
 

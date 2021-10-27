@@ -86,6 +86,16 @@ const Api = {
         return json.categories;
     },
 
+    getRecentAds: async (options) => {
+        const json = await apiFetchGet(
+            '/ad/list',
+            options
+        );
+
+        return json;
+    },
+
+
 
 };
 
