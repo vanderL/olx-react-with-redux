@@ -51,7 +51,11 @@ export const HeaderArea = styled.div`
             margin-left: 20px;
             margin-right: 20px;
 
-            a {
+            a, button {
+                border: 0;
+                background: none;
+                cursor: pointer;
+                outline: none;
                 color: #111;
                 font-size: 14px;
                 transition: all 0.5s;
