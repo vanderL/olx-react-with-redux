@@ -1,14 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+import useApi from '../../services/Api';
 
 import { PageArea } from './styles';
-import { PageContainer, PageTitle } from '../../components/MainComponents';
+import { ErrorMessage, PageContainer, PageTitle } from '../../components/MainComponents';
+import { doLogin } from '../../helpers/AuthHandler';
 
 function Login() {
-  return (
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [rememberPassword, setRememberPassword] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [error, setError] = useState('');
+
+    const api = useApi();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setDisabled(true);
+
+        const json = await api.login(email, password);
+
+        if(json.error) {
+            setError(json.error);
+        } else {
+            doLogin(json.token, rememberPassword);
+            window.location.href = "/";
+            setDisabled(false);
+
+        }
+    }
+
+    return (
       <PageContainer>
-          <PageTitle>Login</PageTitle>
-          <PageArea>
-                <form>
+            <PageTitle>Login</PageTitle>
+            <PageArea>
+                {error && 
+                    <ErrorMessage> {error} </ErrorMessage>
+                }
+
+                <form onSubmit={handleSubmit}>
                     <label 
                         htmlFor="email" 
                         className="area"
@@ -18,6 +49,10 @@ function Login() {
                             <input 
                                 type="email" 
                                 id="email"
+                                disabled={disabled}
+                                value={email}
+                                onChange={ e => setEmail(e.target.value)}
+                                required
                             />
                         </div>
                     </label>
@@ -30,6 +65,11 @@ function Login() {
                             <input 
                                 type="password" 
                                 id="password"
+                                value={password}
+                                onChange={ e => setPassword(e.target.value)}
+                                disabled={disabled}
+                                required
+
                             />
                         </div>
                     </label>
@@ -42,6 +82,10 @@ function Login() {
                             <input 
                                 type="checkbox" 
                                 id="remember"
+                                checked={rememberPassword}
+                                onChange={ () => setRememberPassword(!rememberPassword)}
+                                disabled={disabled}
+
                             />
                         </div>
                     </label>
@@ -52,7 +96,7 @@ function Login() {
                     >
                         <div className="area--title"></div>
                         <div className="area--input">
-                           <button>Fazer Login</button>
+                           <button disabled={disabled}>Fazer Login</button>
                         </div>
                     </label>
                 </form>
