@@ -26,9 +26,9 @@ function Login() {
         } else {
             doLogin(json.token, rememberPassword);
             window.location.href = "/";
-            setDisabled(false);
-
+            
         }
+        setDisabled(false);
     }
 
     return (
