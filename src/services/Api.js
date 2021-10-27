@@ -78,6 +78,15 @@ const Api = {
         return json.states;
     },
 
+    getCategories: async () => {
+        const json = await apiFetchGet(
+            '/categories'
+        );
+
+        return json.categories;
+    },
+
+
 };
 
 export default () => Api;
