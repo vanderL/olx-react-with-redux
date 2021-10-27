@@ -1,13 +1,42 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 
-// import { Container } from './styles';
+import useApi from '../../services/Api';
 
-function Home() {
-  return (
-    <div>
-      <Link to='/about'> about </Link>
-    </div>)
+import { PageArea, SearchArea } from './styles';
+import {  PageContainer } from '../../components/MainComponents';
+
+function Login() {
+    const api = useApi();
+
+    return (
+
+      <>
+        <SearchArea>
+          <PageContainer>
+            <div className="searchBox">
+              <form action="GET" action="/ads">
+                <input 
+                  type="text"
+                  name="q"
+                  placeholder="O que você procura?"
+                />
+                <select name="state" id="state"></select>
+                <button>Pesquisar</button>
+              </form>
+            </div>
+            <div className="categoryList">
+
+            </div>
+          </PageContainer> 
+        </SearchArea>
+        <PageContainer>
+            <PageArea>
+            Home
+            </PageArea>
+        </PageContainer>
+
+      </>
+  )
 }
 
-export default Home;
+export default Login;
