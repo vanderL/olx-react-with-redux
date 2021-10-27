@@ -41,10 +41,10 @@ function Header() {
               ) : (
                 <>
                   <li>
-                    <Link to=""> Login </Link>
+                    <Link to="/login"> Login </Link>
                   </li>
                   <li>
-                    <Link to=""> Cadastrar </Link>
+                    <Link to="/signup"> Cadastrar </Link>
                   </li>
                   <li>
                     <Link to="/login" className="button"> Poste Um Anuncio </Link>

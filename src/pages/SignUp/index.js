@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import useApi from '../../services/Api';
 
@@ -7,11 +7,22 @@ import { ErrorMessage, PageContainer, PageTitle } from '../../components/MainCom
 import { doLogin } from '../../helpers/AuthHandler';
 
 function Login() {
+    const [name, setName] = useState('');
+    const [stateLoc, setStateLoc] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [rememberPassword, setRememberPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState('');
+    const [stateList, setStateList] = useState([]);
+
+    useEffect(() => {
+        const getStates = async () => {
+            const slist = await api.getStates();
+            setStateList(slist);
+        }
+        getStates();
+    },[])
 
     const api = useApi();
 
@@ -20,12 +31,18 @@ function Login() {
         setDisabled(true);
         setError('');
 
-        const json = await api.login(email, password);
+        if(password !== confirmPassword) {
+            setError('Senhas não conferem');
+            setDisabled(false);
+            return
+        }
+
+        const json = await api.register(name, email, password, stateLoc);
 
         if(json.error) {
             setError(json.error);
         } else {
-            doLogin(json.token, rememberPassword);
+            doLogin(json.token);
             window.location.href = "/";
             
         }
@@ -34,13 +51,47 @@ function Login() {
 
     return (
       <PageContainer>
-            <PageTitle>Login</PageTitle>
+            <PageTitle>Cadastro</PageTitle>
             <PageArea>
                 {error && 
                     <ErrorMessage> {error} </ErrorMessage>
                 }
 
                 <form onSubmit={handleSubmit}>
+                    <label 
+                        htmlFor="name" 
+                        className="area"
+                    >
+                        <div className="area--title">Nome Completo</div>
+                        <div className="area--input">
+                            <input 
+                                type="text" 
+                                id="name"
+                                disabled={disabled}
+                                value={name}
+                                onChange={ e => setName(e.target.value)}
+                                required
+                            />
+                        </div>
+                    </label>
+                    <label 
+                        htmlFor="stateLoc" 
+                        className="area"
+                    >
+                        <div className="area--title">Estado</div>
+                        <div className="area--input">
+                            <select 
+                                value={stateLoc} onChange={ e => setStateLoc(e.target.value)}
+                                required
+                            >
+                                <option value=""></option>
+                                { stateList.map((item, key) => 
+                                    <option key={key} value={item._id}> {item.name} </option>
+                                )}
+
+                            </select>
+                        </div>
+                    </label>
                     <label 
                         htmlFor="email" 
                         className="area"
@@ -74,22 +125,25 @@ function Login() {
                             />
                         </div>
                     </label>
+
                     <label 
-                        htmlFor="remember" 
+                        htmlFor="confirmPassword" 
                         className="area"
                     >
-                        <div className="area--title">Lembrar-me</div>
+                        <div className="area--title">Senha</div>
                         <div className="area--input">
                             <input 
-                                type="checkbox" 
-                                id="remember"
-                                checked={rememberPassword}
-                                onChange={ () => setRememberPassword(!rememberPassword)}
+                                type="password" 
+                                id="confirmPassword"
+                                value={confirmPassword}
+                                onChange={ e => setConfirmPassword(e.target.value)}
                                 disabled={disabled}
+                                required
 
                             />
                         </div>
                     </label>
+                   
 
                     <label 
                         htmlFor="remember" 
@@ -97,7 +151,7 @@ function Login() {
                     >
                         <div className="area--title"></div>
                         <div className="area--input">
-                           <button disabled={disabled}>Fazer Login</button>
+                           <button disabled={disabled}>Fazer Cadastro</button>
                         </div>
                     </label>
                 </form>
