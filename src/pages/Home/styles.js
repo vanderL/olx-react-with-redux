@@ -86,6 +86,10 @@ export const PageArea = styled.div`
         flex-wrap: wrap;
     }
 
+    .aditem {
+        width: 25%;
+    }
+
     .seeAllLink {
         color: #111;
         text-decoration: none;
