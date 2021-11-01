@@ -14,7 +14,7 @@ function AdItem({data}) {
 
   return (
     <Item className="aditem">
-        <Link>
+        <Link to={`/ad/${data.id}`}>
           <div className="itemImage">
             <img src={data.image} alt={data.title} />
           </div>

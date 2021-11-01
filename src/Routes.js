@@ -6,6 +6,7 @@ import About from './pages/About';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import NotFound from './pages/NotFound';
+import AdPage from './pages/AdPage';
 
 export const Routes = () => {
     return (
@@ -14,6 +15,7 @@ export const Routes = () => {
             <Route path="/about" exact component={About} />
             <Route path="/login" exact component={Login} />
             <Route path="/signup" exact component={SignUp} />
+            <Route path="/ad/:id" component={AdPage} />
             <Route component={NotFound} />
         </Switch>
     )
