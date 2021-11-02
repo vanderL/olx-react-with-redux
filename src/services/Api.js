@@ -95,7 +95,7 @@ const Api = {
         return json;
     },
 
-    getAd: async (id, others = false) => {
+    getAd: async (id, others = true) => {
         const json = await apiFetchGet(
             '/ad/item',
             {id, others}

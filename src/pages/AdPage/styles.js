@@ -100,5 +100,30 @@ export const RightSide = styled.div`
         color: #999;
     }
     
+`;
 
+export const OthersArea = styled.div`
+    h2 {
+        font-size: 20px
+    }
+`;
+
+export const ListOthers = styled.div`
+    display: flex;
+
+    .adItem {
+        width: 20%;
+    }
+`;
+
+export const BreadCrumb = styled.div`
+    font-size: 13px;
+    margin-top: 20px;
+
+    a {
+        display: inline-block;
+        margin: 0px 5px;
+        text-decoration: underline;
+        color: #111;
+    }
 `;
