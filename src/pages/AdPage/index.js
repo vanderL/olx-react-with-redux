@@ -84,10 +84,35 @@ function Login() {
               <RightSide>
                 <Box className="box--padding">
                   {loading && <Fake height={20}/>}
+                  {adInfo.priceNegotiable && 
+                    <span>Preço Negociável</span>
+                  }
+
+                  {!adInfo.priceNegotiable && adInfo.price &&
+                    <div className="price">Preço: 
+                      <span>R$ {adInfo.price}</span>
+                    </div>
+                  }
                 </Box>
-                <Box className="box--padding">
-                  {loading && <Fake height={50}/>}
-                </Box>
+                {loading && <Fake height={50}/>}
+                {adInfo.userInfo && 
+                  <>
+                    <a 
+                      href={`mailto:${adInfo.userInfo.email}`} 
+                      target="_blank"
+                      className="contactSellerLink"
+                    > 
+                        Fale com o vendedor
+                      </a>
+                    
+                    <Box className="createdBy box--padding">
+                      <strong>{adInfo.userInfo.name}</strong>
+                      <small>E-mail: {adInfo.userInfo.email}</small>
+                      <small>Estado: {adInfo.stateName}</small>
+                    </Box>
+                
+                  </>
+                }
               </RightSide>
           </PageArea>
       </PageContainer>

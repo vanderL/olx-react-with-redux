@@ -69,4 +69,36 @@ export const RightSide = styled.div`
     .box--padding {
         padding: 10px;
     }
+
+    .price span {
+        color:  #0000ff;
+        display: block;
+        font-size: 27px;
+        font-weight: bold;
+    }
+
+    .contactSellerLink {
+        background-color: #0000ff;
+        color: #FFF;
+        height: 30px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px #999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        margin-bottom: 20px;
+    }
+
+    .createdBy strong {
+        display: block;
+    }
+
+    .createdBy small {
+        display: block;
+        margin-top: 10px;
+        color: #999;
+    }
+    
+
 `;
