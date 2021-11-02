@@ -15,6 +15,8 @@ import {
 } from './styles';
 
 import { PageContainer } from '../../components/MainComponents';
+import { useEffect } from 'react';
+import { formatDate } from '../../helpers/FormatDate';
 
 function Login() {
     const api = useApi();
@@ -24,6 +26,17 @@ function Login() {
     const [loading, setLoading] = useState(true);
     const [adInfo, setAdInfo] = useState([]);
 
+    useEffect(() => {
+      
+      const getAdInfo = async (id) => {
+        const json = await api.getAd(id, true);
+        setAdInfo(json);
+        setLoading(false);
+      }
+      getAdInfo(id);
+      console.log(adInfo)
+    },[])
+
     return (
       <PageContainer>
             <PageArea>
@@ -31,6 +44,14 @@ function Login() {
                 <Box>
                   <AdImage>
                     {loading && <Fake height={300}/>}
+                    {adInfo.title && 
+                      <h2>{adInfo.title}</h2>
+                    }
+
+                    {adInfo.dateCreated && 
+                      <small>Criado em {formatDate(adInfo.dateCreated)}</small>
+                    }
+
                   </AdImage>
                   <AdInfo>
                     <AdName>
@@ -38,6 +59,10 @@ function Login() {
                     </AdName>
                     <AdDescription>
                       {loading && <Fake height={100}/>}
+                      {adInfo.description}
+                      <hr />
+                      {adInfo.views && <small>Visualizações {adInfo.views}</small>}
+                      
                     </AdDescription>
                   </AdInfo>
                 </Box>

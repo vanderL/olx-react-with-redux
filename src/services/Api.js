@@ -95,6 +95,15 @@ const Api = {
         return json;
     },
 
+    getAd: async (id, others = false) => {
+        const json = await apiFetchGet(
+            '/ad/item',
+            {id, others}
+        );
+
+        return json;
+    },
+
 
 
 };
