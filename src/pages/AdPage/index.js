@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useApi from '../../services/Api';
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css'
+
 
 import { 
   PageArea, 
@@ -12,6 +15,8 @@ import {
   Box, 
   RightSide,
   Fake,
+  EachSlide,
+  ImgSlide,
 } from './styles';
 
 import { PageContainer } from '../../components/MainComponents';
@@ -41,21 +46,30 @@ function Login() {
       <PageContainer>
             <PageArea>
               <LeftSide>
-                <Box>
+                <Box className="box--leftSide">
                   <AdImage>
                     {loading && <Fake height={300}/>}
-                    {adInfo.title && 
-                      <h2>{adInfo.title}</h2>
-                    }
-
-                    {adInfo.dateCreated && 
-                      <small>Criado em {formatDate(adInfo.dateCreated)}</small>
+                    {adInfo.images && 
+                      <Slide>
+                        {adInfo.images.map((img, key) => (
+                          <EachSlide key={key}>
+                            <ImgSlide src={img} alt="" />
+                          </EachSlide>
+                        ))}
+                      </Slide>
                     }
 
                   </AdImage>
                   <AdInfo>
                     <AdName>
                       {loading && <Fake height={20}/>}
+                      {adInfo.title && 
+                        <h2>{adInfo.title}</h2>
+                      }
+
+                      {adInfo.dateCreated && 
+                        <small>Criado em {formatDate(adInfo.dateCreated)}</small>
+                      }
                     </AdName>
                     <AdDescription>
                       {loading && <Fake height={100}/>}

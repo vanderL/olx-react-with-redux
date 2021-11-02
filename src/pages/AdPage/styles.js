@@ -13,18 +13,48 @@ export const PageArea = styled.div`
 export const LeftSide = styled.div`
     flex: 1;
     margin-right: 20px;
+
+    .box--leftSide{
+        display: flex;
+    }
 `;
-export const AdImage = styled.div``;
+export const AdImage = styled.div`
+    width: 320px;
+    height: 320px;
+    margin-right: 20px;
+`;
+export const EachSlide = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 320px;
+`;
+export const ImgSlide = styled.img`
+    width: 320px;
+    height: 320px;
+`;
 
 export const AdInfo = styled.div`
-    padding: 10px;
+    flex: 1;
 `;
 
 export const AdName = styled.div`
     margin-bottom: 20px;
+
+    h2 {
+        margin-top: 20px;
+    }
+
+    small {
+        color: #999;
+    }
 `;
 
-export const AdDescription = styled.div``;
+export const AdDescription = styled.div`
+    small { 
+        color: #999;
+    }
+`;
 
 export const Box = styled.div`
     background-color: #fff;
