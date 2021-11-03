@@ -82,7 +82,7 @@ const Api = {
         const json = await apiFetchGet(
             '/categories'
         );
-
+            console.log(json.categories)
         return json.categories;
     },
 
