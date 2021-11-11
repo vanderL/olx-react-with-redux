@@ -9,6 +9,7 @@ import SignUp from './pages/SignUp';
 import NotFound from './pages/NotFound';
 import AdPage from './pages/AdPage';
 import AddAd from './pages/AddAd';
+import Ads from './pages/Ads';
 
 export const Routes = () => {
     return (
@@ -18,6 +19,7 @@ export const Routes = () => {
             <RouteHandler path="/login" exact component={Login} />
             <RouteHandler path="/signup" exact component={SignUp} />
             <RouteHandler path="/ad/:id" component={AdPage} />
+            <RouteHandler path="/ads" component={Ads} />
             <RouteHandler path="/post-an-ad" component={AddAd} isPrivate/>
             <RouteHandler component={NotFound} />
         </Switch>

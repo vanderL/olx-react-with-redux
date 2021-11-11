@@ -1,22 +1,29 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
 import MaskedInput from 'react-text-mask';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import useApi from '../../services/Api';
 import { PageArea } from './styles';
 import { ErrorMessage, PageContainer, PageTitle } from '../../components/MainComponents';
 
-function Login() {
+function AddAd() {
     const api = useApi();
-    const fileField = useRef();
+    const history = useHistory();
 
     const [categories, setCategories] = useState([]);
     const [title, setTitle] = useState('');
+    const [img, setImg] = useState('');
+
     const [price, setPrice] = useState('');
     const [priceNegotiable, setPriceNegotiable] = useState(false);
     const [desc, setDesc] = useState('');
     const [category, setCategory] = useState('');
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState('');
+
+    function handleImgChange({target}) {
+      setImg(target.files[0])
+  }
 
     useEffect(() => {
       const getCategories = async (state) => {
@@ -28,20 +35,44 @@ function Login() {
     }, [])
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setDisabled(true);
-        setError('');
+      e.preventDefault();
+      setDisabled(true);
+      setError('');
 
-        // const json = await api.login(email, password);
+      let erros = [];
 
-        // if(json.error) {
-        //     setError(json.error);
-        // } else {
-        //     doLogin(json.token, rememberPassword);
-        //     window.location.href = "/";
-            
-        // }
-        setDisabled(false);
+      if(!title.trim()) erros.push('Sem titulo');
+      if(!category) erros.push('Sem categoria');
+
+      if(erros.length===0){
+
+        const formData = new FormData();
+        
+        formData.append('title', title);
+        formData.append('price', price);
+        formData.append('priceneg', priceNegotiable);
+        formData.append('desc', desc);
+        formData.append('cat', category);
+
+       
+        formData.append('img', img);
+      
+
+        const json = await api.addAd(formData);
+
+        if(!json.error) {
+          history.push(`/ad/${json.id}`);
+          return
+        } else {
+          setError(json.error);
+        }
+
+      } else {
+        setError(erros.join("\n"));
+      }
+
+      setDisabled(false);
+
     }
 
     const priceMask = createNumberMask({
@@ -154,9 +185,11 @@ function Login() {
                         <div className="area--input">
                           <input 
                               type="file" 
-                              id="fileField"
+                              name="img" 
+                              id="img" 
                               disabled={disabled}
-                              ref={fileField}
+                              accept="image/*"
+                              onChange={handleImgChange} 
                               multiple
                           />
                         </div>
@@ -177,4 +210,4 @@ function Login() {
   )
 }
 
-export default Login;
+export default AddAd;

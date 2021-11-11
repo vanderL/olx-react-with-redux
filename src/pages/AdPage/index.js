@@ -43,7 +43,6 @@ function Login() {
       }
       getAdInfo(id);
     },[])
-    console.log(adInfo)
 
     return (
       <PageContainer>

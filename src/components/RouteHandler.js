@@ -3,7 +3,6 @@ import { Route, Redirect } from 'react-router-dom';
 import { isLogged } from '../helpers/AuthHandler';
 
 export default ({ component: Component, isPrivate, ...rest }) => {
-    console.log(isPrivate);
     let logged = isLogged();
     let authorized = (isPrivate && !logged) ? false : true;
 
