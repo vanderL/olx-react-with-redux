@@ -6,9 +6,11 @@ import useApi from '../../services/Api';
 import { PageArea } from './styles';
 import {  PageContainer } from '../../components/MainComponents';
 import AdItem from '../../components/partials/AdItem';
+let timer;
 
 function Ads() {
     const api = useApi();
+    const history = useHistory();
 
     const useQueryString = () => {
       return new URLSearchParams( useLocation().search );
@@ -19,10 +21,53 @@ function Ads() {
     const [q, setQ] = useState( query.get('q') != null ? query.get('q') : '');
     const [cat, setCat] = useState(query.get('cat') != null ? query.get('cat') : '')
     const [searchState, setSearchState] = useState(query.get('state') != null ? query.get('state') : '')
+    
     const [stateList, setStateList] = useState([]);
     const [categories, setCategories] = useState([]);
     const [adsList, setAdsList] = useState([]);
 
+    const [resultOpacity, setResultOpacity] = useState(1);
+
+    const getAdsList = async () => {
+      const json = await api.getRecentAds({
+        sort: 'desc',
+        limit: 12,
+        q,
+        cat,
+        searchState
+      });
+
+      setAdsList(json.ads);
+      setResultOpacity(1);
+    }
+
+    useEffect(() => {
+      let queryString = [];
+      
+      if(q) {
+        queryString.push(`q=${q}`);
+      }
+
+      if(cat) {
+        queryString.push(`cat=${cat}`);
+      }
+
+      if(searchState) {
+        queryString.push(`state=${searchState}`);
+      }
+
+      history.replace({
+        search:`?${queryString.join('&')}`
+      });
+
+      if(timer) {
+        clearTimeout(timer);
+      }
+
+      timer = setTimeout(getAdsList, 2000);
+      setResultOpacity(0.3);
+
+    }, [q, cat, searchState])
 
     useEffect(() => {
       const getState = async () => {
@@ -42,28 +87,26 @@ function Ads() {
       getCategories();
     }, [])
 
-    useEffect(() => {
-      const getRecentAds = async () => {
-        const json = await api.getRecentAds({
-          sort: 'desc',
-          limit: 8
-        });
-        setAdsList(json.ads)
-      }
-
-      getRecentAds();
-    }, [])
-
     return (
       <PageContainer>
         <PageArea>
           <div className="leftSide">
             <form method="GET">
 
-             <input type="text" name="q" placeholder="O que você procura?" value={q}/> 
+             <input 
+              type="text" 
+              name="q" 
+              placeholder="O que você procura?" 
+              value={q}
+              onChange={e => setQ(e.target.value)}
+            /> 
 
               <div className="filterName"> Estado: </div>
-              <select name="state" value={searchState}>
+              <select 
+                name="state" 
+                value={searchState}
+                onChange={e => setSearchState(e.target.value)}
+              >
                 <option></option>
                 {stateList.map((item, key) => (
                   <option key={key} value={item.name}> {item.name} </option>
@@ -74,7 +117,9 @@ function Ads() {
                 {categories.map((category, key) => (
                   <li 
                     key={key} 
-                    className={`categoryItem ${category.slug === cat && 'active'}`}> 
+                    className={`categoryItem ${category.slug === cat && 'active'}`}
+                    onClick={() => setCat(category.slug)}
+                  > 
                     <img src={category.img} alt={category.name}/>
                     <span> {category.name} </span>
                    </li>
@@ -84,7 +129,12 @@ function Ads() {
             </form>
           </div>
           <div className="rightSide">
-...
+            <h2>Resultados</h2>
+            <div className="list" style={{opacity: resultOpacity}}>
+              {adsList.map((ads, index) => (
+                <AdItem key={index} data={ads}/>
+              ))}
+            </div>
           </div>
         </PageArea>
       </PageContainer>
