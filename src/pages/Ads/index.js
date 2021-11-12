@@ -27,8 +27,14 @@ function Ads() {
     const [adsList, setAdsList] = useState([]);
 
     const [resultOpacity, setResultOpacity] = useState(1);
+    const [warningMessage, setWarningMessage] = useState('Carregando...');
+    const [loading, setLoading] = useState(true);
 
     const getAdsList = async () => {
+      setLoading(true);
+      if(loading) {
+        setWarningMessage('Carregando...')
+      }
       const json = await api.getRecentAds({
         sort: 'desc',
         limit: 12,
@@ -38,7 +44,15 @@ function Ads() {
       });
 
       setAdsList(json.ads);
+      
+      setLoading(false);
       setResultOpacity(1);
+      console.log(json.total)
+      if(json.total === 0) {
+        setWarningMessage('Não encontramos resultado');
+      } else {
+        setWarningMessage('')
+      }
     }
 
     useEffect(() => {
@@ -66,6 +80,7 @@ function Ads() {
 
       timer = setTimeout(getAdsList, 2000);
       setResultOpacity(0.3);
+      setWarningMessage('Carregando...')
 
     }, [q, cat, searchState])
 
@@ -130,6 +145,9 @@ function Ads() {
           </div>
           <div className="rightSide">
             <h2>Resultados</h2>
+            <div className="listWarning">
+              {warningMessage}
+            </div>
             <div className="list" style={{opacity: resultOpacity}}>
               {adsList.map((ads, index) => (
                 <AdItem key={index} data={ads}/>
