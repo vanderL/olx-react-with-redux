@@ -22,9 +22,12 @@ function Ads() {
     const [cat, setCat] = useState(query.get('cat') != null ? query.get('cat') : '')
     const [searchState, setSearchState] = useState(query.get('state') != null ? query.get('state') : '')
     
+    const [adsTotal, setAdsTotal] = useState(0);
     const [stateList, setStateList] = useState([]);
     const [categories, setCategories] = useState([]);
     const [adsList, setAdsList] = useState([]);
+    const [pageCount, setPageCount] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const [resultOpacity, setResultOpacity] = useState(1);
     const [warningMessage, setWarningMessage] = useState('Carregando...');
@@ -35,25 +38,43 @@ function Ads() {
       if(loading) {
         setWarningMessage('Carregando...')
       }
+
+      let offset = 0;
+      let limit = 12;
+     offset = (currentPage-1) * limit;
+
       const json = await api.getRecentAds({
         sort: 'desc',
-        limit: 12,
+        limit,
         q,
         cat,
-        searchState
+        searchState,
+        offset
       });
 
       setAdsList(json.ads);
       
       setLoading(false);
       setResultOpacity(1);
-      console.log(json.total)
-      if(json.total === 0) {
+      setAdsTotal(json.total)
+      
+      if(adsTotal === 0) {
         setWarningMessage('Não encontramos resultado');
       } else {
         setWarningMessage('')
       }
     }
+
+    useEffect(() => {
+      if(adsList.length > 0) setPageCount( Math.ceil(adsTotal / adsList.length ) );
+      else setPageCount( 0 );
+
+    },[adsTotal]);
+
+    useEffect(() => {
+      setResultOpacity(0.3);
+      getAdsList();
+    },[currentPage]);
 
     useEffect(() => {
       let queryString = [];
@@ -81,6 +102,7 @@ function Ads() {
       timer = setTimeout(getAdsList, 2000);
       setResultOpacity(0.3);
       setWarningMessage('Carregando...')
+      setCurrentPage(1);
 
     }, [q, cat, searchState])
 
@@ -101,6 +123,11 @@ function Ads() {
 
       getCategories();
     }, [])
+
+    let pagination = [];
+    for(let i = 1; i < pageCount; i++) {
+      pagination.push(i)
+    }
 
     return (
       <PageContainer>
@@ -153,6 +180,19 @@ function Ads() {
                 <AdItem key={index} data={ads}/>
               ))}
             </div>
+            
+            <div className="pagination">
+              {pagination.map((item, k) => 
+                <div 
+                  onClick={() => setCurrentPage(item)}
+                  className={item == currentPage ? 'pagItem active' : 'pagItem'} 
+                  key={k}
+                >
+                  {item}
+                </div>
+              )}
+            </div>
+
           </div>
         </PageArea>
       </PageContainer>

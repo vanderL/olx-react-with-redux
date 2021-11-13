@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const PageArea = styled.div`
    display: flex;
    margin-top: 20px;
+   margin-bottom: 20px;
 
    .leftSide {
        width: 250px;
@@ -69,6 +70,30 @@ export const PageArea = styled.div`
            .aditem {
                width: 25%;
            }
+       }
+
+       .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+
+            .pagItem {
+                width: 30px;
+                height: 30px;
+                border: 1px solid #111;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 14px;
+                cursor: pointer;
+
+                &:hover,
+                &.active {
+                    background-color: #eee;
+                    border: 3px solid #9bb83c;
+                }
+            }
        }
    }
 `;
