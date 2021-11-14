@@ -61,7 +61,7 @@ function Ads() {
       if(adsTotal === 0) {
         setWarningMessage('Não encontramos resultado');
       } else {
-        setWarningMessage('')
+        setWarningMessage('');
       }
     }
 

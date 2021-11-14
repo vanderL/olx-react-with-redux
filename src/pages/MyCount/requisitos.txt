@@ -1,0 +1,9 @@
+Informações do usuario
+Meus Anuncios
+Ações Crud - com Modal
+
+GET /user/me (token é requerido)
+
+PUT /user/me (token, name, email, state, password)
+
+POST /ad/:id (token, state, title, category, price, priceNegotiable, description, images, img[])
