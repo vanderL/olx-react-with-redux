@@ -8,6 +8,9 @@ export const Fake = styled.div`
 export const PageArea = styled.div`
     display: flex;
     margin-top: 20px;
+    @media (max-width: 600px) {
+        flex-direction: column;
+    }
 `;
 
 export const LeftSide = styled.div`
@@ -16,6 +19,18 @@ export const LeftSide = styled.div`
 
     .box--leftSide{
         display: flex;
+    }
+  
+    @media (max-width: 600px) {
+        &{
+            margin: 0px;
+        }
+        .box--leftSide {
+            width: 320px;
+            flex-direction: column;
+            margin: auto;
+            
+        }
     }
 `;
 export const AdImage = styled.div`
@@ -36,6 +51,10 @@ export const ImgSlide = styled.img`
 
 export const AdInfo = styled.div`
     flex: 1;
+
+    @media (max-width: 600px) {
+        padding: 10px;
+    }
 `;
 
 export const AdName = styled.div`
@@ -61,6 +80,8 @@ export const Box = styled.div`
     border-radius: 5px;
     box-shadow:  0 0 4px #999;
     margin-bottom: 20px;
+
+   
 `;
 
 export const RightSide = styled.div`
@@ -99,6 +120,21 @@ export const RightSide = styled.div`
         margin-top: 10px;
         color: #999;
     }
+
+    @media (max-width: 600px) {
+        width: auto;
+        margin-top: 20px;
+
+        .box--padding {
+           width: 320px;
+           margin: auto;
+        }
+
+        .contactSellerLink {
+            width: 320px;
+            margin: 20px auto;
+        }
+    }
     
 `;
 
@@ -106,13 +142,26 @@ export const OthersArea = styled.div`
     h2 {
         font-size: 20px
     }
+
+    @media (max-width: 600px){
+        & {
+            margin: 10px;
+        }
+    }
 `;
 
 export const ListOthers = styled.div`
     display: flex;
+    flex-wrap: wrap;
 
     .adItem {
         width: 20%;
+    }
+
+    @media (max-width: 600px) {
+       .adItem {
+           width: 50%;
+       } 
     }
 `;
 
@@ -125,5 +174,11 @@ export const BreadCrumb = styled.div`
         margin: 0px 5px;
         text-decoration: underline;
         color: #111;
+    }
+
+    @media (max-width: 600px) {
+        & {
+            margin: 20px;
+        }
     }
 `;
